@@ -1,9 +1,10 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
-	"io/ioutil"
+	"net/http"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
@@ -11,10 +12,21 @@ func main() {
 	if err != nil {
 		fmt.Println("http get error", err)
 	}
+	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	doc, err := html.Parse(resp.Body)
 	if err != nil {
 		fmt.Println("body read error", err)
 	}
-	fmt.Println(string(body))
+
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "rect" {
+			fmt.Println(n.Attr)
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
 }
