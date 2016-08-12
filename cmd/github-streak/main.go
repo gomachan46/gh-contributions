@@ -22,7 +22,11 @@ func main() {
 	var f func(*html.Node)
 	f = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "rect" {
-			fmt.Println(n.Attr)
+			for _, attr := range n.Attr {
+				if attr.Key == "data-count" {
+					fmt.Println("data-count: ", attr.Val)
+				}
+			}
 		}
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			f(c)
