@@ -53,6 +53,6 @@ func main() {
 		}
 	}
 	f(doc)
-	fmt.Fprintf(os.Stdout, "start: %s, end: %s\n", start, time.Now().Format("2006-01-02"))
-	fmt.Fprintf(os.Stdout, "count: %d, streak: %d\n", count, streak)
+	fmt.Fprint(os.Stdout, "start,end,contributions,current-streak\n")
+	fmt.Fprintf(os.Stdout, "%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak)
 }
