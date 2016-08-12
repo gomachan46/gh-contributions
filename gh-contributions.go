@@ -2,56 +2,35 @@ package contributions
 
 import (
 	"fmt"
-	"net/http"
 	"strconv"
 
 	"time"
 
-	"golang.org/x/net/html"
+	"github.com/PuerkitoBio/goquery"
 )
 
-func Get(username string) string {
+func Get(username string) (string, error) {
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
-	resp, err := http.Get(url)
+	doc, err := goquery.NewDocument(url)
 	if err != nil {
-		fmt.Println("http get error", err)
-	}
-	defer resp.Body.Close()
-
-	doc, err := html.Parse(resp.Body)
-	if err != nil {
-		fmt.Println("body read error", err)
+		return "", err
 	}
 
 	var count, streak int
-	var start string
-	var f func(*html.Node)
-	f = func(n *html.Node) {
-		if n.Type == html.ElementNode && n.Data == "rect" {
-			for _, attr := range n.Attr {
-				if start == "" {
-					if attr.Key == "data-date" {
-						start = attr.Val
-					}
-				}
-				if attr.Key == "data-count" {
-					c, err := strconv.Atoi(attr.Val)
-					if err != nil {
-						fmt.Println("Atoi error", err)
-					}
-					count += c
-					if c == 0 {
-						streak = 0
-					} else {
-						streak++
-					}
-				}
-			}
+	start, _ := doc.Find("rect").First().Attr("data-date")
+	doc.Find("rect").Each(func(_ int, s *goquery.Selection) {
+		dc, _ := s.Attr("data-count")
+		c, err := strconv.Atoi(dc)
+		if err != nil {
+			return
 		}
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			f(c)
+
+		count += c
+		if c == 0 {
+			streak = 0
+		} else {
+			streak++
 		}
-	}
-	f(doc)
-	return fmt.Sprintf("%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak)
+	})
+	return fmt.Sprintf("%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak), nil
 }

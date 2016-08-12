@@ -13,6 +13,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	contributions, err := contributions.Get(os.Args[1])
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 	fmt.Fprint(os.Stdout, "start,end,contributions,current_streak\n")
-	fmt.Fprintf(os.Stdout, contributions.Get(os.Args[1]))
+	fmt.Fprintf(os.Stdout, contributions)
 }
