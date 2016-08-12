@@ -4,33 +4,44 @@ import (
 	"fmt"
 	"strconv"
 
-	"time"
-
 	"github.com/PuerkitoBio/goquery"
 )
 
-func Get(username string) (string, error) {
-	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
+type Contribution struct {
+	Username      string
+	Start         string
+	End           string
+	Total         int
+	CurrentStreak int
+}
+
+func Get(username string) (*Contribution, error) {
+	contribution := &Contribution{Username: username}
+	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
-		return "", err
+		return contribution, err
 	}
 
-	var count, streak int
-	start, _ := doc.Find("rect").First().Attr("data-date")
-	doc.Find("rect").Each(func(_ int, s *goquery.Selection) {
-		dc, _ := s.Attr("data-count")
-		c, err := strconv.Atoi(dc)
-		if err != nil {
-			return
-		}
-
-		count += c
-		if c == 0 {
-			streak = 0
-		} else {
-			streak++
-		}
+	s, _ := doc.Find("rect").First().Attr("data-date")
+	contribution.Start = s
+	e, _ := doc.Find("rect").Last().Attr("data-date")
+	contribution.End = e
+	counts := doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
+		c, _ := s.Attr("data-count")
+		return c
 	})
-	return fmt.Sprintf("%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak), nil
+	for _, cnt := range counts {
+		c, err := strconv.Atoi(cnt)
+		if err != nil {
+			return contribution, err
+		}
+		contribution.Total += c
+		if c == 0 {
+			contribution.CurrentStreak = 0
+		} else {
+			contribution.CurrentStreak++
+		}
+	}
+	return contribution, nil
 }
