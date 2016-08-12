@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"log"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -15,7 +17,7 @@ type Contribution struct {
 	CurrentStreak int
 }
 
-func Get(username string) (*Contribution, error) {
+func get(username string) (*Contribution, error) {
 	contribution := &Contribution{Username: username}
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
 	doc, err := goquery.NewDocument(url)
@@ -44,4 +46,18 @@ func Get(username string) (*Contribution, error) {
 		}
 	}
 	return contribution, nil
+}
+
+func Get(usernames []string) <-chan *Contribution {
+	ch := make(chan *Contribution)
+	for _, username := range usernames {
+		go func(username string) {
+			c, err := get(username)
+			if err != nil {
+				log.Fatalf("fail get contribution username: %s, err: %s", username, err.Error())
+			}
+			ch <- c
+		}(username)
+	}
+	return ch
 }
