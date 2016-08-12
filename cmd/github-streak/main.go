@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"golang.org/x/net/html"
 	"os"
 	"strconv"
 	"time"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
