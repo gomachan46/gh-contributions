@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"os"
-	streak "github.com/gomachan46/gh-contributions"
+	contributions "github.com/gomachan46/gh-contributions"
 )
 
 func main() {
@@ -14,5 +14,5 @@ func main() {
 	}
 
 	fmt.Fprint(os.Stdout, "start,end,contributions,current_streak\n")
-	fmt.Fprintf(os.Stdout, streak.Get(os.Args[1]))
+	fmt.Fprintf(os.Stdout, contributions.Get(os.Args[1]))
 }
