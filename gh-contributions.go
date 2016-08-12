@@ -1,23 +1,17 @@
-package main
+package gh_contributions
 
 import (
 	"fmt"
 	"net/http"
-
-	"os"
 	"strconv"
+
 	"time"
 
 	"golang.org/x/net/html"
 )
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Fprint(os.Stderr, "do nothing\n")
-		os.Exit(1)
-	}
-
-	url := fmt.Sprintf("https://github.com/users/%s/contributions", os.Args[1])
+func Get(username string) string {
+	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("http get error", err)
@@ -59,6 +53,5 @@ func main() {
 		}
 	}
 	f(doc)
-	fmt.Fprint(os.Stdout, "start,end,contributions,current-streak\n")
-	fmt.Fprintf(os.Stdout, "%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak)
+	return fmt.Sprintf("%s,%s,%d,%d\n", start, time.Now().Format("2006-01-02"), count, streak)
 }
