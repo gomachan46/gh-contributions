@@ -12,7 +12,13 @@ import (
 )
 
 func main() {
-	resp, err := http.Get("https://github.com/users/gomachan46/contributions")
+	if len(os.Args) < 2 {
+		fmt.Fprint(os.Stderr, "do nothing\n")
+		os.Exit(1)
+	}
+
+	url := fmt.Sprintf("https://github.com/users/%s/contributions", os.Args[1])
+	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("http get error", err)
 	}
