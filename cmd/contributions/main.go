@@ -15,7 +15,7 @@ func main() {
 
 	c, err := contributions.Get(os.Args[1])
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintf(os.Stderr, "contribution: %v, err: %v", c, err)
 		os.Exit(1)
 	}
 	fmt.Fprint(os.Stdout, "username,start,end,total,currentStreak\n")
