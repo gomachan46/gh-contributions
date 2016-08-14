@@ -5,8 +5,6 @@ import (
 
 	"os"
 
-	"log"
-
 	contributions "github.com/gomachan46/gh-contributions"
 )
 
@@ -23,6 +21,6 @@ func main() {
 		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.From, c.To, c.Total, c.CurrentStreak)
 	}
 	if len(failures) != 0 {
-		log.Fatalf("fail get contributions usernames: %v", failures)
+		fmt.Fprintf(os.Stderr, "fail get contributions. usernames: %v\n", failures)
 	}
 }
