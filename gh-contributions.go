@@ -18,13 +18,13 @@ type Contribution struct {
 }
 
 func getFrom(doc *goquery.Document) string {
-	s, _ := doc.Find("rect").First().Attr("data-date")
-	return s
+	f, _ := doc.Find("rect").First().Attr("data-date")
+	return f
 }
 
 func getTo(doc *goquery.Document) string {
-	e, _ := doc.Find("rect").Last().Attr("data-date")
-	return e
+	t, _ := doc.Find("rect").Last().Attr("data-date")
+	return t
 }
 
 func getCounts(doc *goquery.Document) []string {
