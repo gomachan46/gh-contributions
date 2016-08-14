@@ -17,6 +17,7 @@ type Contribution struct {
 	To            string
 	Total         int
 	CurrentStreak int
+	LongestStreak int
 }
 
 func getFrom(doc *goquery.Document) string {
@@ -43,6 +44,13 @@ func calcCurrentStreak(count int, before int) int {
 	return before + 1
 }
 
+func calcLongestStreak(current int, before int) int {
+	if current > before {
+		return current
+	}
+	return before
+}
+
 func get(username string) (*Contribution, error) {
 	contribution := &Contribution{Username: username}
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
@@ -62,6 +70,7 @@ func get(username string) (*Contribution, error) {
 		}
 		contribution.Total += c
 		contribution.CurrentStreak = calcCurrentStreak(c, contribution.CurrentStreak)
+		contribution.LongestStreak = calcLongestStreak(contribution.CurrentStreak, contribution.LongestStreak)
 	}
 	return contribution, nil
 }
