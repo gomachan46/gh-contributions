@@ -11,18 +11,18 @@ import (
 
 type Contribution struct {
 	Username      string
-	Start         string
-	End           string
+	From          string
+	To            string
 	Total         int
 	CurrentStreak int
 }
 
-func getStartDate(doc *goquery.Document) string {
+func getFrom(doc *goquery.Document) string {
 	s, _ := doc.Find("rect").First().Attr("data-date")
 	return s
 }
 
-func getEndDate(doc *goquery.Document) string {
+func getTo(doc *goquery.Document) string {
 	e, _ := doc.Find("rect").Last().Attr("data-date")
 	return e
 }
@@ -35,8 +35,8 @@ func get(username string) (*Contribution, error) {
 		return contribution, err
 	}
 
-	contribution.Start = getStartDate(doc)
-	contribution.End = getEndDate(doc)
+	contribution.From = getFrom(doc)
+	contribution.To = getTo(doc)
 	counts := doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
 		c, _ := s.Attr("data-count")
 		return c

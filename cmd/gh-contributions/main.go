@@ -14,10 +14,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprint(os.Stdout, "username,start,end,total,currentStreak\n")
+	fmt.Fprint(os.Stdout, "username,from,to,total,currentStreak\n")
 	ch := contributions.Get(os.Args[1:])
 	for range os.Args[1:] {
 		c := <-ch
-		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.Start, c.End, c.Total, c.CurrentStreak)
+		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.From, c.To, c.Total, c.CurrentStreak)
 	}
 }
