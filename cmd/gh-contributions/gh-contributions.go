@@ -17,7 +17,7 @@ func main() {
 	fmt.Fprint(os.Stdout, "username,start,end,total,currentStreak\n")
 	ch := contributions.Get(os.Args[1:])
 	for range os.Args[1:] {
-			c := <-ch
-			fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.Start, c.End, c.Total, c.CurrentStreak)
+		c := <-ch
+		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.Start, c.End, c.Total, c.CurrentStreak)
 	}
 }
