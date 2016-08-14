@@ -1,4 +1,4 @@
-package contributions
+package gh_contributions
 
 import (
 	"fmt"
