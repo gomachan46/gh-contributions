@@ -27,7 +27,7 @@ bar,2015-08-09,2016-08-12,2,0
 # Installation
 
 ```
-$ go get github.com/gomachan46/gh-contributions
+$ go get github.com/gomachan46/gh-contributions/cmd/gh-contributions
 ```
 
 # Lisence
