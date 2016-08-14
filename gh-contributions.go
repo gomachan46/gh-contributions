@@ -66,10 +66,10 @@ func get(username string) (*Contribution, error) {
 	return contribution, nil
 }
 
-func Get(usernames []string) ([]*Contribution, []error) {
+func Get(usernames []string) ([]*Contribution, []string) {
 	var wg sync.WaitGroup
-	var res []*Contribution
-	var errs []error
+	var successes []*Contribution
+	var failures []string
 	for _, username := range usernames {
 		wg.Add(1)
 		go func(username string) {
@@ -77,12 +77,12 @@ func Get(usernames []string) ([]*Contribution, []error) {
 			c, err := get(username)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "fail get contribution username: %s, contribution: %v, err: %s\n", username, c, err.Error())
-				errs = append(errs, err)
+				failures = append(failures, username)
 			} else {
-				res = append(res, c)
+				successes = append(successes, c)
 			}
 		}(username)
 	}
 	wg.Wait()
-	return res, errs
+	return successes, failures
 }

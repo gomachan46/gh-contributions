@@ -17,12 +17,12 @@ func main() {
 	}
 
 	args := os.Args[1:]
-	res, errs := contributions.Get(args)
+	successes, failures := contributions.Get(args)
 	fmt.Fprint(os.Stdout, "username,from,to,total,currentStreak\n")
-	for _, c := range res {
+	for _, c := range successes {
 		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d\n", c.Username, c.From, c.To, c.Total, c.CurrentStreak)
 	}
-	if len(errs) != 0 {
-		log.Fatalf("fail get contributions errs: %v", errs)
+	if len(failures) != 0 {
+		log.Fatalf("fail get contributions usernames: %v", failures)
 	}
 }
