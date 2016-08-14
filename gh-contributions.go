@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"log"
+	"os"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -70,7 +70,7 @@ func Get(usernames []string) <-chan *Contribution {
 		go func(username string) {
 			c, err := get(username)
 			if err != nil {
-				log.Fatalf("fail get contribution username: %s, err: %s", username, err.Error())
+				fmt.Fprintf(os.Stderr, "fail get contribution username: %s, contribution: %v, err: %s", username, c, err.Error())
 			}
 			ch <- c
 		}(username)
