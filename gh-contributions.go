@@ -27,6 +27,13 @@ func getTo(doc *goquery.Document) string {
 	return e
 }
 
+func getCounts(doc *goquery.Document) []string {
+  return doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
+    c, _ := s.Attr("data-count")
+    return c
+  })
+}
+
 func get(username string) (*Contribution, error) {
 	contribution := &Contribution{Username: username}
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
@@ -37,10 +44,8 @@ func get(username string) (*Contribution, error) {
 
 	contribution.From = getFrom(doc)
 	contribution.To = getTo(doc)
-	counts := doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
-		c, _ := s.Attr("data-count")
-		return c
-	})
+	counts := getCounts(doc)
+
 	for _, cnt := range counts {
 		c, err := strconv.Atoi(cnt)
 		if err != nil {
