@@ -18,7 +18,7 @@ func main() {
 	successes, failures := contributions.Get(args)
 	fmt.Fprint(os.Stdout, "username,from,to,total,currentStreak,longestStreak\n")
 	for _, c := range successes {
-		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d,%d\n", c.Username, c.From, c.To, c.Total, c.CurrentStreak, c.LongestStreak)
+		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d,%d\n", c.Username(), c.From(), c.To(), c.Total(), c.CurrentStreak(), c.LongestStreak())
 	}
 	if len(failures) != 0 {
 		fmt.Fprintf(os.Stderr, "fail get contributions. usernames: %v\n", failures)

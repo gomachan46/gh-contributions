@@ -12,12 +12,36 @@ import (
 )
 
 type Contribution struct {
-	Username      string
-	From          string
-	To            string
-	Total         int
-	CurrentStreak int
-	LongestStreak int
+	username      string
+	from          string
+	to            string
+	total         int
+	currentStreak int
+	longestStreak int
+}
+
+func (c *Contribution) Username() string {
+	return c.username
+}
+
+func (c *Contribution) From() string {
+	return c.from
+}
+
+func (c *Contribution) To() string {
+	return c.to
+}
+
+func (c *Contribution) Total() int {
+	return c.total
+}
+
+func (c *Contribution) CurrentStreak() int {
+	return c.currentStreak
+}
+
+func (c *Contribution) LongestStreak() int {
+	return c.longestStreak
 }
 
 func getFrom(doc *goquery.Document) string {
@@ -52,15 +76,15 @@ func calcLongestStreak(current int, before int) int {
 }
 
 func get(username string) (*Contribution, error) {
-	contribution := &Contribution{Username: username}
-	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
+	contribution := &Contribution{username: username}
+	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.username)
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		return contribution, err
 	}
 
-	contribution.From = getFrom(doc)
-	contribution.To = getTo(doc)
+	contribution.from = getFrom(doc)
+	contribution.to = getTo(doc)
 	counts := getCounts(doc)
 
 	for _, cnt := range counts {
@@ -68,9 +92,9 @@ func get(username string) (*Contribution, error) {
 		if err != nil {
 			return contribution, err
 		}
-		contribution.Total += c
-		contribution.CurrentStreak = calcCurrentStreak(c, contribution.CurrentStreak)
-		contribution.LongestStreak = calcLongestStreak(contribution.CurrentStreak, contribution.LongestStreak)
+		contribution.total += c
+		contribution.currentStreak = calcCurrentStreak(c, contribution.currentStreak)
+		contribution.longestStreak = calcLongestStreak(contribution.currentStreak, contribution.longestStreak)
 	}
 	return contribution, nil
 }
