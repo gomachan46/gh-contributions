@@ -38,7 +38,6 @@ func calcCurrentStreak(count int, before int) int {
 	if count == 0 {
 		return 0
 	}
-
 	return before + 1
 }
 
