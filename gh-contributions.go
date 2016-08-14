@@ -22,6 +22,11 @@ func getStartDate(doc *goquery.Document) string {
 	return s
 }
 
+func getEndDate(doc *goquery.Document) string {
+	e, _ := doc.Find("rect").Last().Attr("data-date")
+	return e
+}
+
 func get(username string) (*Contribution, error) {
 	contribution := &Contribution{Username: username}
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.Username)
@@ -31,8 +36,7 @@ func get(username string) (*Contribution, error) {
 	}
 
 	contribution.Start = getStartDate(doc)
-	e, _ := doc.Find("rect").Last().Attr("data-date")
-	contribution.End = e
+	contribution.End = getEndDate(doc)
 	counts := doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
 		c, _ := s.Attr("data-count")
 		return c
