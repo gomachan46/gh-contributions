@@ -6,6 +6,8 @@ import (
 
 	"os"
 
+	"sync"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -64,16 +66,23 @@ func get(username string) (*Contribution, error) {
 	return contribution, nil
 }
 
-func Get(usernames []string) <-chan *Contribution {
-	ch := make(chan *Contribution)
+func Get(usernames []string) ([]*Contribution, []error) {
+	var wg sync.WaitGroup
+	var res []*Contribution
+	var errs []error
 	for _, username := range usernames {
+		wg.Add(1)
 		go func(username string) {
+			defer wg.Done()
 			c, err := get(username)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "fail get contribution username: %s, contribution: %v, err: %s", username, c, err.Error())
+				fmt.Fprintf(os.Stderr, "fail get contribution username: %s, contribution: %v, err: %s\n", username, c, err.Error())
+				errs = append(errs, err)
+			} else {
+				res = append(res, c)
 			}
-			ch <- c
 		}(username)
 	}
-	return ch
+	wg.Wait()
+	return res, errs
 }
