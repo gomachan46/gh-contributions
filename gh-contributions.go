@@ -28,10 +28,18 @@ func getTo(doc *goquery.Document) string {
 }
 
 func getCounts(doc *goquery.Document) []string {
-  return doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
-    c, _ := s.Attr("data-count")
-    return c
-  })
+	return doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
+		c, _ := s.Attr("data-count")
+		return c
+	})
+}
+
+func calcCurrentStreak(count int, before int) int {
+	if count == 0 {
+		return 0
+	}
+
+	return before + 1
 }
 
 func get(username string) (*Contribution, error) {
@@ -52,11 +60,7 @@ func get(username string) (*Contribution, error) {
 			return contribution, err
 		}
 		contribution.Total += c
-		if c == 0 {
-			contribution.CurrentStreak = 0
-		} else {
-			contribution.CurrentStreak++
-		}
+		contribution.CurrentStreak = calcCurrentStreak(c, contribution.CurrentStreak)
 	}
 	return contribution, nil
 }
