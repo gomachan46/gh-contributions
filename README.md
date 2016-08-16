@@ -7,17 +7,17 @@ Get GitHub contribution
 # Usage
 
 ```
-$ contributions gomachan46
-username,start,end,total,currentStreak
-gomachan46,2015-08-09,2016-08-13,866,29
+$ gh-contributions gomachan46
+username,from,to,total,currentStreak,longestStreak
+gomachan46,2015-08-16,2016-08-16,886,0,176
 ```
 
 ```
-$ contributions gomachan46 foo bar
-username,start,end,total,currentStreak
-gomachan46,2015-08-09,2016-08-13,866,29
-foo,2015-08-09,2016-08-12,1,0
-bar,2015-08-09,2016-08-12,2,0
+$ gh-contributions gomachan46 foo bar
+username,from,to,total,currentStreak,longestStreak
+gomachan46,2015-08-16,2016-08-16,886,0,176
+foo,2015-08-16,2016-08-16,1,0,1
+bar,2015-08-16,2016-08-16,2,0,2
 ```
 
 # Requirements
