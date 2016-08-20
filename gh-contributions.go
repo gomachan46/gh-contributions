@@ -5,26 +5,7 @@ import (
 	"os"
 	"strconv"
 	"sync"
-
-	"github.com/PuerkitoBio/goquery"
 )
-
-func getFrom(doc *goquery.Document) string {
-	f, _ := doc.Find("rect").First().Attr("data-date")
-	return f
-}
-
-func getTo(doc *goquery.Document) string {
-	t, _ := doc.Find("rect").Last().Attr("data-date")
-	return t
-}
-
-func getCounts(doc *goquery.Document) []string {
-	return doc.Find("rect").Map(func(_ int, s *goquery.Selection) string {
-		c, _ := s.Attr("data-count")
-		return c
-	})
-}
 
 func calcCurrentStreak(count int, before int) int {
 	if count == 0 {
@@ -41,19 +22,17 @@ func calcLongestStreak(current int, before int) int {
 }
 
 func get(username string) (*Contribution, error) {
-	contribution := &Contribution{username: username}
-	url := fmt.Sprintf("https://github.com/users/%s/contributions", contribution.username)
-	doc, err := goquery.NewDocument(url)
+	rects, err := scrape(username)
 	if err != nil {
-		return contribution, err
+		return nil, err
 	}
 
-	contribution.from = getFrom(doc)
-	contribution.to = getTo(doc)
-	counts := getCounts(doc)
+	contribution := &Contribution{username: username}
+	contribution.from = rects[0].date
+	contribution.to = rects[len(rects)-1].date
 
-	for _, cnt := range counts {
-		c, err := strconv.Atoi(cnt)
+	for _, r := range rects {
+		c, err := strconv.Atoi(r.count)
 		if err != nil {
 			return contribution, err
 		}
