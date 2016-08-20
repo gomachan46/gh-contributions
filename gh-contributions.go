@@ -5,6 +5,8 @@ import (
 	"os"
 	"strconv"
 	"sync"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func calcCurrentStreak(count int, before int) int {
@@ -19,6 +21,22 @@ func calcLongestStreak(current int, before int) int {
 		return current
 	}
 	return before
+}
+
+func scrape(username string) ([]*Rect, error) {
+	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
+	doc, err := goquery.NewDocument(url)
+	if err != nil {
+		return nil, err
+	}
+	var rects []*Rect
+	doc.Find("rect").Each(func(_ int, s *goquery.Selection) {
+		d, _ := s.Attr("data-date")
+		c, _ := s.Attr("data-count")
+		rects = append(rects, &Rect{date: d, count: c})
+	})
+
+	return rects, nil
 }
 
 func get(username string) (*Contribution, error) {
