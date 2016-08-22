@@ -9,6 +9,18 @@ type Contribution struct {
 	longestStreak int
 }
 
+func (c *Contribution) updateStreak(count int) *Contribution {
+	if count == 0 {
+		c.currentStreak = 0
+	} else {
+		c.currentStreak++
+	}
+	if c.currentStreak > c.longestStreak {
+		c.longestStreak = c.currentStreak
+	}
+	return c
+}
+
 func (c *Contribution) Username() string {
 	return c.username
 }

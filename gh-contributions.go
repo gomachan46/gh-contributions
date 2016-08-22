@@ -55,8 +55,7 @@ func get(username string) (*Contribution, error) {
 			return contribution, err
 		}
 		contribution.total += c
-		contribution.currentStreak = calcCurrentStreak(c, contribution.currentStreak)
-		contribution.longestStreak = calcLongestStreak(contribution.currentStreak, contribution.longestStreak)
+		contribution.updateStreak(c)
 	}
 	return contribution, nil
 }
