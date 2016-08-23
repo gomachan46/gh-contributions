@@ -9,20 +9,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func calcCurrentStreak(count int, before int) int {
-	if count == 0 {
-		return 0
-	}
-	return before + 1
-}
-
-func calcLongestStreak(current int, before int) int {
-	if current > before {
-		return current
-	}
-	return before
-}
-
 func scrape(username string) ([]*Rect, error) {
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
 	doc, err := goquery.NewDocument(url)
