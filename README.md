@@ -1,6 +1,4 @@
-# gh-contributions
-
-===
+# grasshopper
 
 Get GitHub contribution
 
