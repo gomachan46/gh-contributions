@@ -1,4 +1,4 @@
-package gh_contributions
+package grasshopper
 
 type Contribution struct {
 	username      string
