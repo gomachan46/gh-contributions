@@ -1,8 +1,12 @@
 package grasshopper
 
+// Contribution is GitHub contribution data struct
 type Contribution struct {
+	// e.g. gomachan46
 	username      string
+	// e.g. 2015-08-26
 	from          string
+	// e.g. 2016-08-26
 	to            string
 	total         int
 	currentStreak int
