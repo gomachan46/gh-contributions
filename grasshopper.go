@@ -46,6 +46,9 @@ func get(username string) (*Contribution, error) {
 	return contribution, nil
 }
 
+// Get returns Contribution each username
+// If Contribution are not created, username is stored in failures
+// If Contribution are created, Contribution is stored in successes
 func Get(usernames []string) ([]*Contribution, []string) {
 	var wg sync.WaitGroup
 	var successes []*Contribution
