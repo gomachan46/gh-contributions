@@ -1,6 +1,6 @@
 package grasshopper
 
-type Rect struct {
+type rect struct {
 	date  string
 	count string
 }
