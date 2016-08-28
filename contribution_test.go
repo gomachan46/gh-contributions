@@ -9,3 +9,11 @@ func TestContribution_Username(t *testing.T) {
 		t.Errorf("fail Username() got: %s, want: %s", c.Username(), expected)
 	}
 }
+
+func TestContribution_From(t *testing.T) {
+	expected := "2015-08-26"
+	c := &Contribution{from: expected}
+	if c.From() != expected {
+		t.Errorf("fail From() got: %s, want: %s", c.From(), expected)
+	}
+}
