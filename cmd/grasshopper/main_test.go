@@ -6,5 +6,6 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	// TODO: main testing
 	os.Exit(m.Run())
 }
