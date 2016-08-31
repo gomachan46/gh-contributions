@@ -19,7 +19,8 @@ func scrape(username string) ([]*rect, error) {
 	doc.Find("rect").Each(func(_ int, s *goquery.Selection) {
 		d, _ := s.Attr("data-date")
 		c, _ := s.Attr("data-count")
-		rects = append(rects, &rect{date: d, count: c})
+		f, _ := s.Attr("fill")
+		rects = append(rects, &rect{date: d, count: c, fill: f})
 	})
 
 	return rects, nil
