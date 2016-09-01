@@ -33,6 +33,7 @@ func get(username string) (*Contribution, error) {
 	}
 
 	contribution := &Contribution{username: username}
+	contribution.rects = rects
 	contribution.from = rects[0].date
 	contribution.to = rects[len(rects)-1].date
 

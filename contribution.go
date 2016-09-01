@@ -8,6 +8,7 @@ type Contribution struct {
 	total         int
 	currentStreak int
 	longestStreak int
+	rects         []*rect
 }
 
 func (c *Contribution) updateStreak(count int) *Contribution {
@@ -53,4 +54,8 @@ func (c *Contribution) CurrentStreak() int {
 // LongestStreak returns a longest streak during the period covered
 func (c *Contribution) LongestStreak() int {
 	return c.longestStreak
+}
+
+func (c *Contribution) Rects() []*rect {
+	return c.rects
 }
