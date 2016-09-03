@@ -56,6 +56,7 @@ func (c *Contribution) LongestStreak() int {
 	return c.longestStreak
 }
 
+// Rects returns a slice of rect
 func (c *Contribution) Rects() []*rect {
 	return c.rects
 }
