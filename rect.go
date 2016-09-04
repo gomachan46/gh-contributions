@@ -1,22 +1,23 @@
 package grasshopper
 
-type rect struct {
+// Rect is contribution info of a day
+type Rect struct {
 	date  string
 	count string
 	fill  string
 }
 
 // Date returns a date of rect
-func (r *rect) Date() string {
+func (r *Rect) Date() string {
 	return r.date
 }
 
 // Count returns a contributions count of rect
-func (r *rect) Count() string {
+func (r *Rect) Count() string {
 	return r.count
 }
 
 // Fill returns a color of rect
-func (r *rect) Fill() string {
+func (r *Rect) Fill() string {
 	return r.fill
 }

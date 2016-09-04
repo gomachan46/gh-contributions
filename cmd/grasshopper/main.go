@@ -18,6 +18,9 @@ func main() {
 	successes, failures := grasshopper.Get(args)
 	fmt.Fprint(os.Stdout, "username,from,to,total,currentStreak,longestStreak\n")
 	for _, c := range successes {
+		for _, r := range c.Rects() {
+			fmt.Fprintf(os.Stdout, "%s\n", r.Fill())
+		}
 		fmt.Fprintf(os.Stdout, "%s,%s,%s,%d,%d,%d\n", c.Username(), c.From(), c.To(), c.Total(), c.CurrentStreak(), c.LongestStreak())
 	}
 	if len(failures) != 0 {

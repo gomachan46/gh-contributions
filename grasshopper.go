@@ -9,18 +9,18 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func scrape(username string) ([]*rect, error) {
+func scrape(username string) ([]*Rect, error) {
 	url := fmt.Sprintf("https://github.com/users/%s/contributions", username)
 	doc, err := goquery.NewDocument(url)
 	if err != nil {
 		return nil, err
 	}
-	var rects []*rect
+	var rects []*Rect
 	doc.Find("rect").Each(func(_ int, s *goquery.Selection) {
 		d, _ := s.Attr("data-date")
 		c, _ := s.Attr("data-count")
 		f, _ := s.Attr("fill")
-		rects = append(rects, &rect{date: d, count: c, fill: f})
+		rects = append(rects, &Rect{date: d, count: c, fill: f})
 	})
 
 	return rects, nil
