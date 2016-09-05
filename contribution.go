@@ -8,7 +8,7 @@ type Contribution struct {
 	total         int
 	currentStreak int
 	longestStreak int
-	rects         []*rect
+	rects         []*Rect
 }
 
 func (c *Contribution) updateStreak(count int) *Contribution {
@@ -56,7 +56,7 @@ func (c *Contribution) LongestStreak() int {
 	return c.longestStreak
 }
 
-// Rects returns a slice of rect
-func (c *Contribution) Rects() []*rect {
+// Rects returns a slice of Rect
+func (c *Contribution) Rects() []*Rect {
 	return c.rects
 }
